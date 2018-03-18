@@ -22,4 +22,8 @@
 hs_err_pid*
 
 perfcake*
+.idea
+*iml
+target
+
 
