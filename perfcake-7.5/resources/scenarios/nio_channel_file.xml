@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<scenario xmlns="urn:perfcake:scenario:7.0">
-   <!--properties/-->
-   <generator/>
-   <sender/>
-   <!--reporting/-->
-   <!--messages/-->
-   <validation/>
-</scenario>
