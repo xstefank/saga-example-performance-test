@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PerformanceTestExecutor {
 
-    private static final String PERFCAKE_COMMAND = "../perfcake-7.5/bin/perfcake.sh -s http -Dtarget_endpoint=%s";
+    private static final String PERFCAKE_COMMAND = "../perfcake-7.5/bin/perfcake.sh";
     private static final long ASYNC_TIMEOUT = 30 * 1000;
     private static final long ASYNC_DELAY = 10 * 1000;
     private static final long ASYNC_PERIOD = 5 * 1000;
@@ -27,9 +27,9 @@ public class PerformanceTestExecutor {
     public static void main(String[] args) throws IOException, InterruptedException {
         Properties config = loadProperties(System.getProperty("config.file"));
 
-        ProcessBuilder pb = new ProcessBuilder("../perfcake-7.5/bin/perfcake.sh", "-s", "http", "-Dtarget_endpoint=http://localhost:8080/api/order");
+        ProcessBuilder pb = new ProcessBuilder(PERFCAKE_COMMAND, "-s", "http",
+                "-Dtarget_endpoint=" + config.getProperty("orderservice.post"));
         pb.inheritIO();
-        pb.directory(new File("../perfcake-7.5"));
         Process process = pb.start();
         process.waitFor();
 
