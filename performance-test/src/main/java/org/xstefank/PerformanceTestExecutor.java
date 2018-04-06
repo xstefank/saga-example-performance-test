@@ -6,6 +6,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -18,26 +19,24 @@ public class PerformanceTestExecutor {
 
     private static final String PERFCAKE_COMMAND = "../perfcake-7.5/bin/perfcake.sh -s http -Dtarget_endpoint=%s";
     private static final long ASYNC_TIMEOUT = 30 * 1000;
+    private static final long ASYNC_DELAY = 10 * 1000;
+    private static final long ASYNC_PERIOD = 5 * 1000;
+    private static final long TEST_ORDER_COUNT = 10;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Properties config = loadProperties(System.getProperty("config.file"));
 
-//        ProcessBuilder pb = new ProcessBuilder("../perfcake-7.5/bin/perfcake.sh", "-s", "http", "-Dtarget_endpoint=http://localhost:8080/api/order");
-//        pb.inheritIO();
-//        pb.directory(new File("../perfcake-7.5"));
-//        System.out.println(pb.directory().getAbsolutePath());
-//        Process process = pb.start();
-//        process.waitFor();
+        ProcessBuilder pb = new ProcessBuilder("../perfcake-7.5/bin/perfcake.sh", "-s", "http", "-Dtarget_endpoint=http://localhost:8080/api/order");
+        pb.inheritIO();
+        pb.directory(new File("../perfcake-7.5"));
+        Process process = pb.start();
+        process.waitFor();
 
-        if (checkAsyncResult(config)) {
-            System.out.println("Performance test executed successfully");
-        } else {
-            System.out.println("Performance test failure");
-        }
+        checkAsyncResult(config);
 
     }
 
-    private static boolean checkAsyncResult(Properties config) {
+    private static void checkAsyncResult(Properties config) {
         ResteasyClient resteasyClient = (ResteasyClient) ResteasyClientBuilder.newClient();
 
         WebTarget orderGetTarget = resteasyClient.target(UriBuilder.fromUri(config.getProperty("orderservice.get")));
@@ -49,16 +48,25 @@ public class PerformanceTestExecutor {
 
             @Override
             public void run() {
-                if (System.currentTimeMillis() - startTime > ASYNC_TIMEOUT) {
+                System.out.println("Checking async result...");
+                if (checkObjectCount(orderGetTarget) || System.currentTimeMillis() - startTime > ASYNC_TIMEOUT) {
+                    System.out.println("Ending aynch checks...");
+                    if (checkObjectCount(orderGetTarget)) {
+                        System.out.println("Test executed successfully");
+                    } else {
+                        System.out.println("Test failure");
+                    }
                     cancel();
-                } else {
-                    int ordersCount = getObjectList(orderGetTarget).size();
-                    System.out.println(ordersCount);
                 }
             }
-        }, 0, 1000);
+        }, ASYNC_DELAY, ASYNC_PERIOD);
 
-        return true;
+    }
+
+    private static boolean checkObjectCount(WebTarget target) {
+        int ordersCount = getObjectList(target).size();
+
+        return ordersCount >= TEST_ORDER_COUNT;
     }
 
     @SuppressWarnings(value = "unchecked")
