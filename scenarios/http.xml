@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scenario xmlns="urn:perfcake:scenario:6.0">
-   <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:30000}"/>
+   <run type="${perfcake.run.type:iteration}" value="${perfcake.run.count:10000}"/>
    <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:100}">
       <property name="shutdownPeriod" value="3000"/>
    </generator>
