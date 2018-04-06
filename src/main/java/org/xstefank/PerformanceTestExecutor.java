@@ -20,7 +20,7 @@ public class PerformanceTestExecutor {
 
     private static final String PERFCAKE_COMMAND = "../perfcake-7.5/bin/perfcake.sh";
     private static final long ASYNC_TIMEOUT = 60 * 60 * 1000;
-    private static final long ASYNC_DELAY = 30 * 1000;
+    private static final long ASYNC_DELAY = 2 * 60 * 1000;
     private static final long ASYNC_PERIOD = 5 * 1000;
     private static final long TEST_ORDER_COUNT = 1000;
 
@@ -38,7 +38,8 @@ public class PerformanceTestExecutor {
     }
 
     private static void checkAsyncResult(Properties config) {
-        System.out.println(String.format("Running async checks (delay, period, timeout) [%d, %d, %d]", ASYNC_DELAY, ASYNC_PERIOD, ASYNC_TIMEOUT));
+        System.out.println(String.format("Running async checks (delay, period, timeout) [%d, %d, %d]",
+                getTime(ASYNC_DELAY), getTime(ASYNC_PERIOD), getTime(ASYNC_TIMEOUT)));
         ResteasyClient resteasyClient = (ResteasyClient) ResteasyClientBuilder.newClient();
 
         WebTarget orderGetTarget = resteasyClient.target(UriBuilder.fromUri(config.getProperty("orderservice.get")));
@@ -68,7 +69,7 @@ public class PerformanceTestExecutor {
     }
 
     private static String getTime(long millis) {
-        return String.format("%02d min, %02d sec",
+        return String.format("%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(millis),
                 TimeUnit.MILLISECONDS.toSeconds(millis) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
