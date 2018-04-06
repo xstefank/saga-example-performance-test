@@ -19,10 +19,10 @@ import java.util.concurrent.TimeUnit;
 public class PerformanceTestExecutor {
 
     private static final String PERFCAKE_COMMAND = "../perfcake-7.5/bin/perfcake.sh";
-    private static final long ASYNC_TIMEOUT = 30 * 1000;
-    private static final long ASYNC_DELAY = 10 * 1000;
+    private static final long ASYNC_TIMEOUT = 60 * 60 * 1000;
+    private static final long ASYNC_DELAY = 30 * 1000;
     private static final long ASYNC_PERIOD = 5 * 1000;
-    private static final long TEST_ORDER_COUNT = 10;
+    private static final long TEST_ORDER_COUNT = 1000;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Properties config = loadProperties(System.getProperty("config.file"));

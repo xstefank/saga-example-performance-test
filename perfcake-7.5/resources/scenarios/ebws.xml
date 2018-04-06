@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:7.0">
+   <run type="${perfcake.run.type:time}" value="${perfcake.run.duration:300000}"/>
+   <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:100}"/>
+   <sender class="HttpSender">
+      <target>http://${server.host}:${server.port}/Ebws/ebws/PerformanceTest/EBWS</target>
+   </sender>
+   <reporting>
+      <reporter class="ThroughputStatsReporter">
+         <destination class="CsvDestination">
+            <period type="time" value="30000"/>
+            <property name="path" value="${perfcake.scenario}-throughput-stats.csv"/>
+         </destination>
+         <!--destination class="ConsoleDestination">
+            <period type="time" value="30000" />
+         </destination-->
+      </reporter>
+      <!--reporter class="MemoryUsageReporter">
+         <destination class="CsvDestination">
+            <period type="time" value="30000"/>
+            <property name="path" value="${perfcake.scenario}-memory-usage.csv" />
+         </destination>
+         <destination class="ConsoleDestination">
+            <period type="time" value="30000" />
+         </destination>
+      </reporter-->
+   </reporting>
+   <messages>
+      <message uri="5kB_ebws_reply.xml"/>
+   </messages>
+</scenario>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:7.0">
+   <run type="${perfcake.run.type:iteration}" value="${perfcake.run.duration:1}"/>
+   <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:1}"/>
+   <sender class="GroovySender">
+      <target>./src/main/resources/messages/readline.groovy</target>
+   </sender>
+   <reporting>
+      <reporter class="ThroughputStatsReporter">
+         <destination class="CsvDestination">
+            <period type="iteration" value="1"/>
+            <property name="path" value="${perfcake.scenario}-throughput-stats.csv"/>
+         </destination>
+         <destination class="ConsoleDestination">
+            <period type="time" value="1000"/>
+         </destination>
+      </reporter>
+   </reporting>
+   <messages>
+      <message uri="plain_text.txt">
+         <validatorRef id="1"/>
+      </message>
+      <message uri="plain_text.txt">
+         <validatorRef id="2"/>
+      </message>
+      <message uri="plain_text.txt">
+         <validatorRef id="3"/>
+      </message>
+      <message uri="plain_text.txt">
+         <validatorRef id="4"/>
+      </message>
+   </messages>
+   <validation>
+      <validator id="1" class="RegExpMessageValidator">
+         <property value="pattern">
+            <text>
+               <![CDATA[
+^you entered: Hello groovy world 1
+you entered: Hello groovy world 2
+you entered: Hello groovy world 3$
+]]>
+            </text>
+         </property>
+      </validator>
+      <validator id="2" class="RegExpMessageValidator">
+         <property value="pattern">
+            <text>
+               <![CDATA[
+^you entered: Hello groovy world 16
+you entered: Hello groovy world 2
+you entered: Hello groovy world 3$
+]]>
+            </text>
+         </property>
+      </validator>
+      <validator id="3" class="RulesMessageValidator">
+         <property value="pattern">
+            <text>
+               <![CDATA[
+                  Message body contains "Hello".
+                  #Message body contains "HelloXY".
+               ]]>
+            </text>
+         </property>
+      </validator>
+      <validator id="4" class="RulesMessageValidator">
+         <property value="pattern">
+            <text>
+               <![CDATA[
+                  Message body contains "HelloXY".
+               ]]>
+            </text>
+         </property>
+      </validator>
+   </validation>
+</scenario>

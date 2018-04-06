@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:7.0">
+   <run type="${perfcake.run.type:iteration}" value="${perfcake.run.duration:10}"/>
+   <generator class="DefaultMessageGenerator" threads="${perfcake.thread.count:1}"/>
+   <sender class="GroovySender">
+      <target>${perfcake.messages.dir}/readline.groovy</target>
+   </sender>
+   <reporting>
+      <reporter class="ThroughputStatsReporter">
+         <destination class="CsvDestination">
+            <period type="iteration" value="1"/>
+            <property name="path" value="${perfcake.scenario}-throughput-stats.csv"/>
+         </destination>
+         <destination class="ConsoleDestination">
+            <period type="time" value="1000"/>
+         </destination>
+      </reporter>
+   </reporting>
+   <messages>
+      <message uri="plain_text.txt"/>
+   </messages>
+</scenario>
