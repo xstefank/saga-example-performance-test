@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class PerformanceTestExecutor {
 
@@ -37,6 +38,7 @@ public class PerformanceTestExecutor {
     }
 
     private static void checkAsyncResult(Properties config) {
+        System.out.println(String.format("Running async checks (delay, period, timeout) [%d, %d, %d]", ASYNC_DELAY, ASYNC_PERIOD, ASYNC_TIMEOUT));
         ResteasyClient resteasyClient = (ResteasyClient) ResteasyClientBuilder.newClient();
 
         WebTarget orderGetTarget = resteasyClient.target(UriBuilder.fromUri(config.getProperty("orderservice.get")));
@@ -48,8 +50,9 @@ public class PerformanceTestExecutor {
 
             @Override
             public void run() {
-                System.out.println("Checking async result...");
-                if (checkObjectCount(orderGetTarget) || System.currentTimeMillis() - startTime > ASYNC_TIMEOUT) {
+                long timeMillis = System.currentTimeMillis() - startTime;
+                System.out.println(String.format("[%s] Checking async result...", getTime(timeMillis)));
+                if (checkObjectCount(orderGetTarget) || timeMillis > ASYNC_TIMEOUT) {
                     System.out.println("Ending aynch checks...");
                     if (checkObjectCount(orderGetTarget)) {
                         System.out.println("Test executed successfully");
@@ -57,10 +60,19 @@ public class PerformanceTestExecutor {
                         System.out.println("Test failure");
                     }
                     cancel();
+                    System.exit(0);
                 }
             }
         }, ASYNC_DELAY, ASYNC_PERIOD);
 
+    }
+
+    private static String getTime(long millis) {
+        return String.format("%02d min, %02d sec",
+                TimeUnit.MILLISECONDS.toMinutes(millis),
+                TimeUnit.MILLISECONDS.toSeconds(millis) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+        );
     }
 
     private static boolean checkObjectCount(WebTarget target) {
