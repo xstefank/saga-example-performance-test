@@ -52,10 +52,12 @@ public class PerformanceTestExecutor {
             @Override
             public void run() {
                 long timeMillis = System.currentTimeMillis() - startTime;
-                System.out.println(String.format("[%s] Checking async result...", getTime(timeMillis)));
-                if (checkObjectCount(orderGetTarget) || timeMillis > ASYNC_TIMEOUT) {
-                    System.out.println("Ending aynch checks...");
-                    if (checkObjectCount(orderGetTarget)) {
+                int ordersCount = getObjectList(orderGetTarget).size();
+                System.out.println(String.format("[%s] [%d completed] Checking async result...",
+                        getTime(timeMillis), ordersCount));
+                if (ordersCount > TEST_ORDER_COUNT || timeMillis > ASYNC_TIMEOUT) {
+                    System.out.println("Ending aynch hecks...");
+                    if (ordersCount > TEST_ORDER_COUNT) {
                         System.out.println("Test executed successfully");
                     } else {
                         System.out.println("Test failure");
@@ -74,12 +76,6 @@ public class PerformanceTestExecutor {
                 TimeUnit.MILLISECONDS.toSeconds(millis) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
         );
-    }
-
-    private static boolean checkObjectCount(WebTarget target) {
-        int ordersCount = getObjectList(target).size();
-
-        return ordersCount >= TEST_ORDER_COUNT;
     }
 
     @SuppressWarnings(value = "unchecked")
