@@ -13,6 +13,11 @@
         <property name="expectedResponseCodes" value="200"/>
     </sender>
     <reporting>
+        <reporter class="WarmUpReporter" enabled="${perfcake.warmup:true}">
+          <property name="minimalWarmUpCount" value="100" />
+          <property name="maximalWarmUpDuration" value="100" />
+          <property name="maximalWarmUpType" value="iteration" />
+        </reporter>
         <reporter class="ThroughputStatsReporter">
             <destination class="ConsoleDestination">
                 <period type="time" value="1000"/>
