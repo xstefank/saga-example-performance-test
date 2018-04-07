@@ -38,7 +38,7 @@ public class PerformanceTestExecutor {
     }
 
     private static void checkAsyncResult(Properties config) {
-        System.out.println(String.format("Running async checks (delay, period, timeout) [%d, %d, %d]",
+        System.out.println(String.format("Running async checks (delay, period, timeout) [%s, %s, %s]",
                 getTime(ASYNC_DELAY), getTime(ASYNC_PERIOD), getTime(ASYNC_TIMEOUT)));
         ResteasyClient resteasyClient = (ResteasyClient) ResteasyClientBuilder.newClient();
 
