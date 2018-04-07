@@ -22,7 +22,7 @@ public class PerformanceTestExecutor {
     private static final long ASYNC_TIMEOUT = 60 * 60 * 1000;
     private static final long ASYNC_DELAY = 2 * 60 * 1000;
     private static final long ASYNC_PERIOD = 5 * 1000;
-    private static final long TEST_ORDER_COUNT = 10100;
+    private static final long TEST_ORDER_COUNT = 10000;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Properties config = loadProperties(System.getProperty("config.file"));
