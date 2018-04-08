@@ -56,7 +56,7 @@ public class PerformanceTestExecutor {
                 System.out.println(String.format("[%s] [%d completed] Checking async result...",
                         getTime(timeMillis), ordersCount));
                 if (ordersCount > TEST_ORDER_COUNT || timeMillis > ASYNC_TIMEOUT) {
-                    System.out.println("Ending aynch hecks...");
+                    System.out.println("Ending aynch checks...");
                     if (ordersCount > TEST_ORDER_COUNT) {
                         System.out.println("Test executed successfully");
                     } else {
