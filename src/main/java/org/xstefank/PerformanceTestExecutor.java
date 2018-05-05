@@ -6,7 +6,6 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -40,6 +39,7 @@ public class PerformanceTestExecutor {
     private static void checkAsyncResult(Properties config) {
         System.out.println(String.format("Running async checks (delay, period, timeout) [%s, %s, %s]",
                 getTime(ASYNC_DELAY), getTime(ASYNC_PERIOD), getTime(ASYNC_TIMEOUT)));
+
         ResteasyClient resteasyClient = (ResteasyClient) ResteasyClientBuilder.newClient();
 
         WebTarget orderGetTarget = resteasyClient.target(UriBuilder.fromUri(config.getProperty("orderservice.get")));
@@ -67,7 +67,6 @@ public class PerformanceTestExecutor {
                 }
             }
         }, ASYNC_DELAY, ASYNC_PERIOD);
-
     }
 
     private static String getTime(long millis) {
