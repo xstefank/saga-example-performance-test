@@ -11,11 +11,8 @@ This project contains performance test implementation for the Saga example quick
   .. `wget https://github.com/PerfCake/PerfCake/releases/download/v7.5/perfcake-v7.5-bin.zip`
   .. `unzip perfcake-v7.5-bin.zip`
 
-. install docker 
-----
-curl -fsSL get.docker.com -o get-docker.sh
-sh get-docker.sh
-----
+. install docker
+  .. `curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh`
 
 . install docker-compose
   .. +sudo curl -L https://github.com/docker/compose/releases/download/1.20.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose+
@@ -24,5 +21,6 @@ sh get-docker.sh
   .. `cp scenarios/http.xml perfcake-7.5/resources/scenarios/http.xml`
 
 . run the test
-  .. `mvn exec:java -Dexec.mainClass=org.xstefank.PerformanceTestExecutor -Dconfig.file=axon-service.properties`
+  .. `mvn exec:java -Dexec.mainClass=org.xstefank.PerformanceTestExecutor -Dconfig.file=$QUICKSTART.properties`
+    - `QUICKSTART in {axon-service, eventuate-service, eventuate-tram-service, lra-service}`
 
