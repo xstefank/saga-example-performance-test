@@ -15,7 +15,13 @@ This project contains performance test implementation for the Saga example quick
   .. `curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh`
 
 . install docker-compose
-  .. +sudo curl -L https://github.com/docker/compose/releases/download/1.20.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose+
+  .. +sudo curl -L https://github.com/docker/compose/releases/download/1.20.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose+
+
+. run the example application
+  - https://github.com/xstefank/axon-service[axon-service]
+  - https://github.com/xstefank/eventuate-service[eventuate-service]
+  - https://github.com/xstefank/eventuate-tram-service[eventuate-tram-service]
+  - https://github.com/xstefank/lra-service[lra-service]
 
 . copy the testing scenario to the perfkace scenarios
   .. `cp scenarios/http.xml perfcake-7.5/resources/scenarios/http.xml`
